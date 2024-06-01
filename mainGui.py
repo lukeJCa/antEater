@@ -20,12 +20,24 @@ class PokerGUI(tk.Tk):
     def create_menu(self):
         menu_bar = Menu(self)
         file_menu = Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label="New", command=self.new_game)
-        file_menu.add_command(label="Open", command=self.open_game)
+        file_menu.add_command(label="Open WSOP", command=self.openWSOP)
+        file_menu.add_command(label="Resize WSOP Window", command=self.resizeWSOP)
+        file_menu.add_command(label="Move WSOP Window", command=self.moveWSOP)
+        file_menu.add_command(label="Open Login Details", command=self.openLogin)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.quit)
-        menu_bar.add_cascade(label="File", menu=file_menu)
-        
+        menu_bar.add_cascade(label="Setup", menu=file_menu)
+        vision_menu = Menu(menu_bar, tearoff=0)
+        vision_menu.add_command(label="Create Points", command=self.createPoints)
+        menu_bar.add_cascade(label="Vision", menu=vision_menu)
+        assistant_menu = Menu(menu_bar, tearoff=0)
+        assistant_menu.add_command(label="Odds", command=self.oddsToWin)
+        menu_bar.add_cascade(label="Assistant", menu=assistant_menu)
+        anteater_menu = Menu(menu_bar, tearoff=0)
+        anteater_menu.add_command(label="Cash", command=self.oddsToWin)
+        anteater_menu.add_command(label="Tournament", command=self.oddsToWin)
+        anteater_menu.add_command(label="Daily Blitz", command=self.oddsToWin)
+        menu_bar.add_cascade(label="AntEater", menu=anteater_menu)
         self.config(menu=menu_bar)
     
     def create_widgets(self):
@@ -84,18 +96,39 @@ class PokerGUI(tk.Tk):
         
         threading.Thread(target=update_number, daemon=True).start()
     
-    def new_game(self):
-        self.error_log.set("Starting new game...")
-        # Add logic to start a new game
+    def openWSOP(self):
+        import webbrowser
+        url = "https://www.playwsop.com/play"
+        try:
+            webbrowser.open(url)
+            print(f"Opening website: {url}")
+        except Exception as e:
+            print(f"Error opening website: {e}")
     
-    def open_game(self):
-        self.error_log.set("Opening existing game...")
-        # Add logic to open an existing game
+    def resizeWSOP(self):
+        import os
+        try:
+            os.system('python resize.py')
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to run script: {e}")
+            print(f"Error: {e}")
     
-    def button_action(self, action):
-        self.error_log.set(f"Button '{action}' clicked.")
-        # Add logic for button actions
+    def moveWSOP(self):
+        import os
+        try:
+            os.system('python place.py')
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to run script: {e}")
+            print(f"Error: {e}")
 
+    def openLogin(self):
+        pass # to do, notepad with login details to accounts
+
+    def createPoints(self):
+        pass # to do, move the function which allows user to click points here
+
+    def oddsToWin(self):
+        pass # for actually assisting with live games
 if __name__ == "__main__":
     app = PokerGUI()
     app.mainloop()
