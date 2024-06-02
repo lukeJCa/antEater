@@ -1,6 +1,6 @@
 import os
 import glob
-import loadPoints
+from vision_library import loadPoints
 
 # load all the data files for images beforehand, keep them in memory for speed
 def preloadCoordinates(prefix, directory):

@@ -1,5 +1,4 @@
-from vision_library import coordinates, getColours, determineColour
-import compareStrings, suites
+from vision_library import coordinates, getColours, determineColour, compareStrings, suites
 import pyautogui
 
 # generic function given an input prefix and directory to look for reference files

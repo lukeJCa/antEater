@@ -2,8 +2,10 @@ import tkinter as tk
 from tkinter import ttk, messagebox, Menu
 import threading, time, random, os, itertools, pyautogui
 from PIL import Image, ImageTk
-import compareStrings, suites, ranking
-from vision_library import detect_cards, coordinates, getColours, determineColour
+from vision_library import detect_cards, coordinates, getColours, determineColour, detect_players, compareStrings, suites
+from calculation_library import ranking
+from helper_library import pickDeck
+from builder_library import screenPointSelector
 
 class PokerGUI(tk.Tk):
     def __init__(self):
@@ -29,15 +31,17 @@ class PokerGUI(tk.Tk):
         file_menu.add_command(label="Resize WSOP Window", command=self.resizeWSOP)
         file_menu.add_command(label="Move WSOP Window", command=self.moveWSOP)
         file_menu.add_command(label="Open Login Details", command=self.openLogin)
+        file_menu.add_command(label="Choose Deck", command=self.chooseDeck)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.quit)
         menu_bar.add_cascade(label="Setup", menu=file_menu)
         vision_menu = Menu(menu_bar, tearoff=0)
         vision_menu.add_command(label="Hole Cards", command=self.hole_cards)
-        vision_menu.add_command(label="Create Points", command=self.createPoints)
+        vision_menu.add_command(label="Players Present", command=self.playersPresent)
         menu_bar.add_cascade(label="Vision", menu=vision_menu)
         assistant_menu = Menu(menu_bar, tearoff=0)
         assistant_menu.add_command(label="Odds", command=self.oddsToWin)
+        assistant_menu.add_command(label="Create Points", command=self.createPoints)
         menu_bar.add_cascade(label="Assistant", menu=assistant_menu)
         anteater_menu = Menu(menu_bar, tearoff=0)
         anteater_menu.add_command(label="Cash", command=self.oddsToWin)
@@ -131,7 +135,7 @@ class PokerGUI(tk.Tk):
     def resizeWSOP(self):
         import os
         try:
-            os.system('python resize.py')
+            os.system('python helper_library\\resize.py')
         except Exception as e:
             messagebox.showerror("Error", f"Failed to run script: {e}")
             print(f"Error: {e}")
@@ -139,7 +143,7 @@ class PokerGUI(tk.Tk):
     def moveWSOP(self):
         import os
         try:
-            os.system('python place.py')
+            os.system('python helper_library\\place.py')
         except Exception as e:
             messagebox.showerror("Error", f"Failed to run script: {e}")
             print(f"Error: {e}")
@@ -148,7 +152,12 @@ class PokerGUI(tk.Tk):
         pass # to do, notepad with login details to accounts
 
     def createPoints(self):
-        pass # to do, move the function which allows user to click points here
+        # Run the external script "screenPointSelector.py"
+        try:
+            os.system('python builder_library\\screenPointSelector.py')
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to run script: {e}")
+            print(f"Error: {e}")
 
     def oddsToWin(self):
         pass # for actually assisting with live games
@@ -156,6 +165,18 @@ class PokerGUI(tk.Tk):
     def hole_cards(self):
         cards = detect_cards.hole_cards()
         print(cards)
+
+    def playersPresent(self):
+        # Take a screenshot
+        screenshot = pyautogui.screenshot()
+        # Convert image to RGB (in case it is in another mode like RGBA, L, etc.)
+        img = screenshot.convert('RGB')
+        players = detect_players.detectNumberOfPlayers(img)
+        print(players)
+
+    # game has different decks which will muck with the player identification, need to pick which deck it will be beforehand
+    def chooseDeck(self):
+        pickDeck.save_directory_path()
 
 if __name__ == "__main__":
     app = PokerGUI()
