@@ -1,4 +1,4 @@
-import getColours
+from vision_library import getColours
 
 def filter_tuples_by_first_element(tuples_array):
     """

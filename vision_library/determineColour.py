@@ -39,10 +39,3 @@ def get_color_at_point(x, y):
     # Determine the color name
     color_name = get_color_name(rgb)
     return rgb, color_name
-
-# Example usage:
-if __name__ == "__main__":
-    x, y = 474, 584  # Replace with desired coordinates
-    rgb, color_name = get_color_at_point(x, y)
-    print(f"RGB values at ({x}, {y}): {rgb}")
-    print(f"Color name: {color_name}")

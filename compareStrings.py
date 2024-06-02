@@ -18,3 +18,8 @@ def all_strings_same(string_list):
 
     return True
 
+def char_right_of_first_underscore(s):
+    pos = s.find('_')
+    if pos != -1 and pos + 1 < len(s):
+        return s[pos + 1]
+    return None  # or raise an error or return a default value

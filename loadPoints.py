@@ -21,7 +21,3 @@ def read_coordinates(file_name):
 
     return coordinates
 
-# Example usage (commented out to prevent execution here):
-folder = 'pointStorage/'
-coordinates = read_coordinates(folder + '6_7.txt')
-print(coordinates)

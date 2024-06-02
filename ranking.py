@@ -51,13 +51,5 @@ def simulate_poker(num_players, hole_cards, known_community_cards = [], num_simu
             wins += 1
     return wins / num_simulations * 100
 
-# Example usage
-#hands = [['As', 'Kd'], ['9h', '9d'], ['2c', '2d']]
-#community_cards = ['2h', '2s', '3c', '3d', '4s']
-
-num_players = 7
-hole_cards = ['Qs', 'Ac']
-known_community_cards = ['8d', '4d', '7c']
-print(simulate_poker(num_players, hole_cards, known_community_cards))
 
 

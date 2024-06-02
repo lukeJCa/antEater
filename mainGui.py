@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, Menu
-import threading, time, random, os, itertools
+import threading, time, random, os, itertools, pyautogui
 from PIL import Image, ImageTk
+import compareStrings, suites, ranking
+from vision_library import detect_cards, coordinates, getColours, determineColour
 
 class PokerGUI(tk.Tk):
     def __init__(self):
@@ -31,6 +33,7 @@ class PokerGUI(tk.Tk):
         file_menu.add_command(label="Exit", command=self.quit)
         menu_bar.add_cascade(label="Setup", menu=file_menu)
         vision_menu = Menu(menu_bar, tearoff=0)
+        vision_menu.add_command(label="Hole Cards", command=self.hole_cards)
         vision_menu.add_command(label="Create Points", command=self.createPoints)
         menu_bar.add_cascade(label="Vision", menu=vision_menu)
         assistant_menu = Menu(menu_bar, tearoff=0)
@@ -149,6 +152,11 @@ class PokerGUI(tk.Tk):
 
     def oddsToWin(self):
         pass # for actually assisting with live games
+
+    def hole_cards(self):
+        cards = detect_cards.hole_cards()
+        print(cards)
+
 if __name__ == "__main__":
     app = PokerGUI()
     app.mainloop()

@@ -28,8 +28,3 @@ def draw_points_on_screenshot(coords, output_path='screenshot_with_points.png'):
 
     # Save the modified screenshot
     screenshot.save(output_path)
-
-# Example usage:
-coords = loadPoints.read_coordinates('pointStorage/6_7.txt')
-draw_points_on_screenshot(coords)
-print(f"Screenshot with points saved as 'screenshot_with_points.png'")
