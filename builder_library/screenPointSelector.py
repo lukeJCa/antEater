@@ -40,7 +40,7 @@ class ScreenshotSelector:
         self.image = np.array(screenshot)
 
     def select_points(self):
-        self.fig, self.ax = plt.subplots(figsize = (40,40))
+        self.fig, self.ax = plt.subplots(figsize = (30,30))
         self.ax.imshow(self.image)
         self.cid_click = self.fig.canvas.mpl_connect('button_press_event', self.on_click)
         self.cid_zoom = self.fig.canvas.mpl_connect('scroll_event', self.on_zoom)
@@ -97,7 +97,7 @@ class ScreenshotSelector:
             self.fig.canvas.draw()
 
     def save_points(self):
-        with open(self.filename, "w") as file:
+        with open(self.filename + '.txt', "w") as file:
             for point in self.points:
                 file.write(f"{point[0]}, {point[1]}\n")
 

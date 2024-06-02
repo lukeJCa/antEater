@@ -1,1 +1,1 @@
-pointStorage\decks\champion
+pointStorage\decks\badbeat

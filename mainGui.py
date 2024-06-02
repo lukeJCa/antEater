@@ -37,6 +37,9 @@ class PokerGUI(tk.Tk):
         menu_bar.add_cascade(label="Setup", menu=file_menu)
         vision_menu = Menu(menu_bar, tearoff=0)
         vision_menu.add_command(label="Hole Cards", command=self.hole_cards)
+        vision_menu.add_command(label="Flop Cards", command=self.flop_cards)
+        vision_menu.add_command(label="Turn Card", command=self.turn_card)
+        vision_menu.add_command(label="River Card", command=self.river_card)
         vision_menu.add_command(label="Players Present", command=self.playersPresent)
         menu_bar.add_cascade(label="Vision", menu=vision_menu)
         assistant_menu = Menu(menu_bar, tearoff=0)
@@ -177,6 +180,18 @@ class PokerGUI(tk.Tk):
     # game has different decks which will muck with the player identification, need to pick which deck it will be beforehand
     def chooseDeck(self):
         pickDeck.save_directory_path()
+
+    def flop_cards(self):
+        cards = detect_cards.flop_cards()
+        print(cards)
+
+    def turn_card(self):
+        cards = detect_cards.turn_card()
+        print(cards)
+
+    def river_card(self):
+        cards = detect_cards.river_card()
+        print(cards)
 
 if __name__ == "__main__":
     app = PokerGUI()
