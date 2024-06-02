@@ -2,9 +2,11 @@ import pyautogui
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import tkinter as tk
+from tkinter import filedialog
 
 class ScreenshotSelector:
-    def __init__(self, filename="selected_points.txt"):
+    def __init__(self):
         self.points = []
         self.image = None
         self.zoom_level = 1.0
@@ -15,14 +17,30 @@ class ScreenshotSelector:
         self.cid_key = None
         self.cid_motion = None
         self.drag_start = None
-        self.filename = filename
+        self.filename = self.pick_file_location()
+
+
+    def pick_file_location(self):
+        # Open a save file dialog
+        file_path = filedialog.asksaveasfilename(
+            title="Select Directory and Name File",
+            filetypes=(("Text files", "*.txt"), ("All files", "*.*"))
+        )
+
+        if file_path:
+            # Return the full file path
+            return file_path
+        else:
+            print("No file selected.")
+            return None
+
 
     def take_screenshot(self):
         screenshot = pyautogui.screenshot()
         self.image = np.array(screenshot)
 
     def select_points(self):
-        self.fig, self.ax = plt.subplots()
+        self.fig, self.ax = plt.subplots(figsize = (40,40))
         self.ax.imshow(self.image)
         self.cid_click = self.fig.canvas.mpl_connect('button_press_event', self.on_click)
         self.cid_zoom = self.fig.canvas.mpl_connect('scroll_event', self.on_zoom)
@@ -89,6 +107,5 @@ class ScreenshotSelector:
 
 # Example usage
 if __name__ == "__main__":
-    filename = input("Enter the filename to save the selected points: ")
-    selector = ScreenshotSelector('pointStorage/' + filename)
+    selector = ScreenshotSelector()
     selector.run()
