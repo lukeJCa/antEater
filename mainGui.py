@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, Menu
-import threading
-import time
-import random
+import threading, time, random, os, itertools
+from PIL import Image, ImageTk
 
 class PokerGUI(tk.Tk):
     def __init__(self):
@@ -10,12 +9,16 @@ class PokerGUI(tk.Tk):
         self.title("AntEater - Poker Engine")
         self.geometry("800x600")
         
-        self.icon = tk.PhotoImage(file="icon.png")  # Load the image
+        self.icon = tk.PhotoImage(file="image_assets/icons/anteater.png")  # Load the image
         self.iconphoto(False, self.icon)  # Set the window icon
 
         self.create_menu()
         self.create_widgets()
         self.create_background_process()
+
+        self.images = self.load_images("image_assets/covers")
+        self.image_iter = itertools.cycle(self.images)
+        self.update_image()
     
     def create_menu(self):
         menu_bar = Menu(self)
@@ -50,11 +53,12 @@ class PokerGUI(tk.Tk):
         error_label.pack(side=tk.RIGHT, padx=10, pady=10)
         
         # Poker Board Frame
-        board_frame = ttk.Frame(self)
-        board_frame.pack(expand=True, fill=tk.BOTH)
-        
-        self.board_canvas = tk.Canvas(board_frame, background="green")
-        self.board_canvas.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
+        self.board_frame = ttk.Frame(self)
+        self.board_frame.pack(expand=True, fill=tk.BOTH)
+
+        self.cover_label = tk.Label(self.board_frame)
+        self.cover_label.pack()
+
         
         # Players Frame
         players_frame = ttk.Frame(self)
@@ -95,7 +99,23 @@ class PokerGUI(tk.Tk):
                 self.bg_number.set(str(new_number))
         
         threading.Thread(target=update_number, daemon=True).start()
-    
+
+    def load_images(self, directory):
+        images = []
+        for filename in os.listdir(directory):
+            if filename.endswith('.png'):
+                image_path = os.path.join(directory, filename)
+                image = Image.open(image_path)
+                image = image.resize((700, 400))
+                image = ImageTk.PhotoImage(image)
+                images.append(image)
+        return images
+
+    def update_image(self):
+        next_image = next(self.image_iter)
+        self.cover_label.config(image=next_image)
+        self.after(5000, self.update_image)
+
     def openWSOP(self):
         import webbrowser
         url = "https://www.playwsop.com/play"

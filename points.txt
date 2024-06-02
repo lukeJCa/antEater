@@ -1,1 +1,0 @@
-Point(x=418, y=395) = black means spade, red means diamond,
